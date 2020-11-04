@@ -9,31 +9,31 @@ import threading
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-        self.timelist=[1,2,5,10,30,60,1440]
-        self.indexNumberofCombobox=2
-        self.path=""
-        
-        
-        #scaled(64, 64, QtCore.Qt.KeepAspectRatio)
+        self.timelist=[1,2,5,10,30,60,1440] #time list
 
+        self.indexNumberofCombobox=2 #combobox index number store
+
+        self.path=""  #store path 
+        
+        
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(700, 600)
 
-        #lebel
+        #lebel for display image
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.currentimageLable = QtWidgets.QLabel(self.centralwidget)
         self.currentimageLable.setGeometry(QtCore.QRect(70, 40, 551, 311))
         self.currentimageLable.setObjectName("currentimageLable")
-        #self.deskImg() 
+        self.deskImg() 
         
         
 
-        # FolderpathTextBox
+        # Folderpath TextBox
         self.folderpath = QtWidgets.QLineEdit(self.centralwidget)
         self.folderpath.setGeometry(QtCore.QRect(60, 440, 281, 21))
         self.folderpath.setObjectName("folderpath")
-        # Browsebutton
+        # Browse button
         self.browseButton = QtWidgets.QPushButton(self.centralwidget)
         self.browseButton.setGeometry(QtCore.QRect(60, 410, 75, 23))
         font = QtGui.QFont()
@@ -43,7 +43,7 @@ class Ui_MainWindow(object):
         self.browseButton.setObjectName("browseButton")
         self.browseButton.clicked.connect(self.BrowsePath) #callfunction
 
-#           timetabble lable
+#           time lable
         self.Timelable = QtWidgets.QLabel(self.centralwidget)
         self.Timelable.setGeometry(QtCore.QRect(450, 406, 71, 20))
         font = QtGui.QFont()
@@ -53,7 +53,7 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.Timelable.setFont(font)
         self.Timelable.setObjectName("Timelable")
-#           time tible combobox
+#           time combobox
         self.timeComboBox = QtWidgets.QComboBox(self.centralwidget)
         self.timeComboBox.setGeometry(QtCore.QRect(450, 430, 131, 22))
         self.timeComboBox.setObjectName("timeComboBox")
@@ -65,7 +65,7 @@ class Ui_MainWindow(object):
         self.timeComboBox.addItem("")
         self.timeComboBox.addItem("")
 
-#           check box
+#           check box for suffle
         self.suffilecheckBox = QtWidgets.QCheckBox(self.centralwidget)
         self.suffilecheckBox.setGeometry(QtCore.QRect(60, 480, 70, 17))
         font = QtGui.QFont()
@@ -114,12 +114,12 @@ class Ui_MainWindow(object):
 
         self.applyButton.setText(_translate("Mainwindow", "Apply"))
 
-    # ------- Browes button function------
+    # ------- Browes button function  for get file path from user------
     def BrowsePath(self):
         self.path=QtWidgets.QFileDialog.getExistingDirectory()
         self.folderpath.setText(self.path)
     
-    #----------Apply Push Button--------
+    #----------Apply Push Button function--------
     def ApplyButton(self):
         self.indexNumberofCombobox=self.timeComboBox.currentIndex()
         os.chdir(self.path)
@@ -143,7 +143,7 @@ class Ui_MainWindow(object):
         imagepath= f"{gopath}\{listofImage[0]}"
         return (imagepath)
 
-
+#--------display current desktop wallpaper--------
     def deskImg(self):
         self.current_desktopImagePath=self.GetCurrentDesktopImage()
         self.DesktopImage = QtGui.QPixmap(self.current_desktopImagePath)
