@@ -6,8 +6,13 @@ import os
 import ctypes
 import time
 import threading
+import DesktopWallpaper
+
+
+
 
 class Ui_MainWindow(object):
+
     def setupUi(self, MainWindow):
         self.timelist=[1,2,5,10,30,60,1440] #time list
 
@@ -25,7 +30,8 @@ class Ui_MainWindow(object):
         self.currentimageLable = QtWidgets.QLabel(self.centralwidget)
         self.currentimageLable.setGeometry(QtCore.QRect(70, 40, 551, 311))
         self.currentimageLable.setObjectName("currentimageLable")
-        self.deskImg() 
+        t=threading.Thread(target=self.deskImg)
+        t.start()
         
         
 
@@ -42,6 +48,7 @@ class Ui_MainWindow(object):
         self.browseButton.setFont(font)
         self.browseButton.setObjectName("browseButton")
         self.browseButton.clicked.connect(self.BrowsePath) #callfunction
+
 
 #           time lable
         self.Timelable = QtWidgets.QLabel(self.centralwidget)
@@ -114,41 +121,38 @@ class Ui_MainWindow(object):
 
         self.applyButton.setText(_translate("Mainwindow", "Apply"))
 
+
+
     # ------- Browes button function  for get file path from user------
     def BrowsePath(self):
         self.path=QtWidgets.QFileDialog.getExistingDirectory()
         self.folderpath.setText(self.path)
     
+
+    
     #----------Apply Push Button function--------
     def ApplyButton(self):
         self.indexNumberofCombobox=self.timeComboBox.currentIndex()
-        os.chdir(self.path)
-        images=os.listdir()
-        for i in range(len(images)):
-            #t=self.timelist[self.indexNumberofCombobox]*60
-            try:
-                name,extesion=os.path.splitext(images[i])
-                if extesion in [".JPEG",".jpeg",".PNG",".png",".jpg",".JPG"]:
-                    absolutepath = self.path+ "\\" + images[i]
-                    ctypes.windll.user32.SystemParametersInfoW(20, 0, absolutepath , 0)
-                    time.sleep(10)
-            except Exception as e:
-                print(e)
+        t1=threading.Thread(target=self.ApplyButtonFunctionCall)
+        t1.start()
 
-    #----------Get current desktop wallpaper---
-    def GetCurrentDesktopImage(self):
-        gopath=os.path.expandvars(r"%AppData%\Microsoft\Windows\Themes\CachedFiles")
-        os.chdir(gopath)
-        listofImage=os.listdir()
-        imagepath= f"{gopath}\{listofImage[0]}"
-        return (imagepath)
+    def ApplyButtonFunctionCall(self):
+        DesktopWallpaper.changeDeskWall(self.path)
+
+
 
 #--------display current desktop wallpaper--------
     def deskImg(self):
-        self.current_desktopImagePath=self.GetCurrentDesktopImage()
-        self.DesktopImage = QtGui.QPixmap(self.current_desktopImagePath)
+        t3=threading.Thread(target=self.displaywall)
+        t3.start()
+    def displaywall(self):
+        current_desktopImagePath=DesktopWallpaper.GetCurrentDesktopImage()
+        self.DesktopImage = QtGui.QPixmap(current_desktopImagePath)
         self.pixmap=self.DesktopImage.scaled(551, 311)
         self.currentimageLable.setPixmap(self.pixmap)
+
+
+
 
 if __name__ == "__main__":
     import sys
