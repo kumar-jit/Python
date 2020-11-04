@@ -1,0 +1,3 @@
+kumarjit,100
+sus,200
+debu,300
