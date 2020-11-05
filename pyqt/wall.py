@@ -9,6 +9,7 @@ import time
 import threading
 import DesktopWallpaper
 import win32api, win32con, win32gui
+import Userinformetion
 
 
 
@@ -41,6 +42,9 @@ class Ui_MainWindow(object):
         self.folderpath = QtWidgets.QLineEdit(self.centralwidget)
         self.folderpath.setGeometry(QtCore.QRect(60, 440, 281, 21))
         self.folderpath.setObjectName("folderpath")
+        self.folderpath.setText(DesktopWallpaper.Read_last_location())
+        self.path=self.folderpath.text()
+
         # Browse button
         self.browseButton = QtWidgets.QPushButton(self.centralwidget)
         self.browseButton.setGeometry(QtCore.QRect(60, 410, 75, 23))
@@ -127,9 +131,10 @@ class Ui_MainWindow(object):
 
     # ------- Browes button function  for get file path from user------
     def BrowsePath(self):
-        a=r"C:\Users\kumar\OneDrive\Pictures\Saved Pictures"
-        self.path=QFileDialog.getExistingDirectory(None,"file",a)
-        self.folderpath.setText(self.path)
+        lastpath=self.path
+        self.folderpath.setText(QFileDialog.getExistingDirectory(None,"Select a Folder",lastpath))
+        self.path=self.folderpath.text()
+        DesktopWallpaper.Write_last_location(self.path)
         # QtWidgets.QFileDialog.getExistingDirectoryUrl(self,"open file",r"C:\Users\kumar\OneDrive\Pictures\Saved Pictures")
     
 

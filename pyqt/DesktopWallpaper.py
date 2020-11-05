@@ -4,7 +4,7 @@ import time
 import win32api, win32con, win32gui
 from PIL import Image  
 import PIL 
-
+import Userinformetion
 
 def changeDeskWall(pathString,t):
     os.chdir(pathString)
@@ -35,21 +35,29 @@ def setWallpaper(path):
     except Exception as e:
         print(e)
 
-
-
-def GetFolderPathWallpaper():
-    current_path=os.getcwd()
-    path=os.path.join(current_path,'Cwallpaper')
-    if os.path.exists(path):
-        return path + "\\"
+def Read_last_location():
+    if Userinformetion.New_user():
+        path=Userinformetion.New_user_creat()
+        with open(path,'r')as rf:
+            lines=rf.readlines()
+            return lines[0]
     else:
-        os.mkdir(path)
-        return path + "\\"
+        try:
+            path=Userinformetion.exists_user_path()
+            with open(path,'r')as rf:
+                lines=rf.readlines()
+                return lines[0]
+        except Exception as e:
+            print(e)
+def Write_last_location(last_path):
+    path=Userinformetion.exists_user_path()
+    with open(path,'w') as wf:
+        wf.write(last_path)
 
 def GetCurrentDesktopImage():
     gopath=os.path.expandvars(r"%AppData%\Microsoft\Windows\Themes\TranscodedWallpaper")
     #geting the current path
-    folder_path=GetFolderPathWallpaper()
+    folder_path=Userinformetion.UserInformetionFolder()
     #creating image file location
     image_location=folder_path+"\desktop.jpg"
     # creating a image object (main image)  
