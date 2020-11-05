@@ -10,22 +10,29 @@ def changeDeskWall(pathString):
     os.chdir(pathString)
     images=os.listdir()
     for i in range(len(images)):
+        
         #t=self.timelist[self.indexNumberofCombobox]*60
         try:
+            
             name,extesion=os.path.splitext(images[i])
             if extesion in [".JPEG",".jpeg",".PNG",".png",".jpg",".JPG"]:
                 path = pathString+ "\\" + images[i]
                 setWallpaper(path)
+                print(i)
                 time.sleep(1)
+                
         except Exception as e:
             continue
 
 
 def setWallpaper(path):
-    key = win32api.RegOpenKeyEx(win32con.HKEY_CURRENT_USER,"Control Panel\\Desktop",0,win32con.KEY_SET_VALUE)
-    win32api.RegSetValueEx(key, "WallpaperStyle", 0, win32con.REG_SZ, "0")
-    win32api.RegSetValueEx(key, "TileWallpaper", 0, win32con.REG_SZ, "0")
-    win32gui.SystemParametersInfo(win32con.SPI_SETDESKWALLPAPER, path, 1+2)
+    try:
+        key = win32api.RegOpenKeyEx(win32con.HKEY_CURRENT_USER,"Control Panel\\Desktop",0,win32con.KEY_SET_VALUE)
+        win32api.RegSetValueEx(key, "WallpaperStyle", 0, win32con.REG_SZ, "0")
+        win32api.RegSetValueEx(key, "TileWallpaper", 0, win32con.REG_SZ, "0")
+        win32gui.SystemParametersInfo(win32con.SPI_SETDESKWALLPAPER, path, 1+2)
+    except Exception as e:
+        print(e)
 
 
 
@@ -52,4 +59,4 @@ def GetCurrentDesktopImage():
     return imagepath
 
 
-GetCurrentDesktopImage()
+# changeDeskWall(r"C:\Users\kumar\OneDrive\Pictures\Saved Pictures")
