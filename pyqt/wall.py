@@ -150,7 +150,6 @@ class Ui_MainWindow(object):
     def displaywall(self):
         while True:
             try:
-                time.sleep(0.1)
                 current_desktopImagePath=DesktopWallpaper.GetCurrentDesktopImage()
                 self.DesktopImage = QtGui.QPixmap(current_desktopImagePath)
                 self.pixmap=self.DesktopImage.scaled(551, 311)
