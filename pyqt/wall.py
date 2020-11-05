@@ -144,7 +144,7 @@ class Ui_MainWindow(object):
     def ApplyButtonFunctionCall(self):
         t=self.timelist[self.indexNumberofCombobox]*60
         print(t)
-        DesktopWallpaper.changeDeskWall(self.path,3)
+        DesktopWallpaper.changeDeskWall(self.path,t)
         
 
 #--------display current desktop wallpaper--------
