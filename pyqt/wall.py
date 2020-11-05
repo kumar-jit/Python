@@ -1,4 +1,4 @@
-
+#http://www.brunningonline.net/simon/blog/archives/winDesktop.py.html
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -7,6 +7,7 @@ import ctypes
 import time
 import threading
 import DesktopWallpaper
+import win32api, win32con, win32gui
 
 
 
@@ -134,26 +135,33 @@ class Ui_MainWindow(object):
     def ApplyButton(self):
         self.indexNumberofCombobox=self.timeComboBox.currentIndex()
         t1=threading.Thread(target=self.ApplyButtonFunctionCall)
+        t1.daemon=True
         t1.start()
 
     def ApplyButtonFunctionCall(self):
         DesktopWallpaper.changeDeskWall(self.path)
 
-
-
 #--------display current desktop wallpaper--------
     def deskImg(self):
+        
         t3=threading.Thread(target=self.displaywall)
+        t3.daemon=True
         t3.start()
     def displaywall(self):
-        current_desktopImagePath=DesktopWallpaper.GetCurrentDesktopImage()
-        self.DesktopImage = QtGui.QPixmap(current_desktopImagePath)
-        self.pixmap=self.DesktopImage.scaled(551, 311)
-        self.currentimageLable.setPixmap(self.pixmap)
-
-
-
-
+        while True:
+            try:
+                time.sleep(0.1)
+                current_desktopImagePath=DesktopWallpaper.GetCurrentDesktopImage()
+                self.DesktopImage = QtGui.QPixmap(current_desktopImagePath)
+                self.pixmap=self.DesktopImage.scaled(551, 311)
+                self.currentimageLable.setPixmap(self.pixmap)
+                
+                print("it called")
+            except:
+                print("getting error")
+                time.sleep(1)
+            
+            
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
