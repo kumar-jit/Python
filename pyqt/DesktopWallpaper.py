@@ -6,24 +6,25 @@ from PIL import Image
 import PIL 
 
 
-def changeDeskWall(pathString):
+def changeDeskWall(pathString,t):
     os.chdir(pathString)
     images=os.listdir()
-    for i in range(len(images)):
+    i=0
+    while True: 
         
-        #t=self.timelist[self.indexNumberofCombobox]*60
         try:
             
             name,extesion=os.path.splitext(images[i])
             if extesion in [".JPEG",".jpeg",".PNG",".png",".jpg",".JPG"]:
                 path = pathString+ "\\" + images[i]
                 setWallpaper(path)
-                print(i)
-                time.sleep(1)
+                time.sleep(t)
                 
         except Exception as e:
             continue
-
+        i +=1
+        if i==len(images):
+            i=0
 
 def setWallpaper(path):
     try:

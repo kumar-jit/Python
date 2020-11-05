@@ -2,6 +2,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog
 import os
 import ctypes
 import time
@@ -126,8 +127,10 @@ class Ui_MainWindow(object):
 
     # ------- Browes button function  for get file path from user------
     def BrowsePath(self):
-        self.path=QtWidgets.QFileDialog.getExistingDirectory()
+        a=r"C:\Users\kumar\OneDrive\Pictures\Saved Pictures"
+        self.path=QFileDialog.getExistingDirectory(None,"file",a)
         self.folderpath.setText(self.path)
+        # QtWidgets.QFileDialog.getExistingDirectoryUrl(self,"open file",r"C:\Users\kumar\OneDrive\Pictures\Saved Pictures")
     
 
     
@@ -139,7 +142,10 @@ class Ui_MainWindow(object):
         t1.start()
 
     def ApplyButtonFunctionCall(self):
-        DesktopWallpaper.changeDeskWall(self.path)
+        t=self.timelist[self.indexNumberofCombobox]*60
+        print(t)
+        DesktopWallpaper.changeDeskWall(self.path,3)
+        
 
 #--------display current desktop wallpaper--------
     def deskImg(self):
