@@ -4,19 +4,21 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 import os
-import ctypes
 import time
 import threading
 import DesktopWallpaper
 import win32api, win32con, win32gui
 import Userinformetion
+import multiprocessing as mp
 
-
+def foo():
+    print("work")
 
 
 class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
+        self.applyflag=0
         Userinformetion.setpath()  #set the path
         self.timelist=[0.15,0.5,1,2,5,10,30,60,1440] #time list
 
@@ -138,75 +140,57 @@ class Ui_MainWindow(object):
 
     # ------- Browes button function  for get file path from user------
     def BrowsePath(self):
-        self.folderpath.setText(QFileDialog.getExistingDirectory(None,"Select a Folder",self.folderpath.text()))
+        getpath=self.folderpath.text()
+        self.folderpath.setText(QFileDialog.getExistingDirectory(None,"Select a Folder",getpath))
         self.path=self.folderpath.text()
         
-        DesktopWallpaper.Write_last_location(self.path)
+        #DesktopWallpaper.Write_last_location(self.path)
         # QtWidgets.QFileDialog.getExistingDirectoryUrl(self,"open file",r"C:\Users\kumar\OneDrive\Pictures\Saved Pictures")
     
 
     
     #----------Apply Push Button function--------
     def ApplyButton(self):
-        self.applyClickCount=0
-        stop_threads = False
-        self.indexNumberofCombobox=self.timeComboBox.currentIndex()
-        self.t1=threading.Thread(target=self.ApplyButtonFunctionCall) #creat thread and call function
-        self.t1.daemon=True
-       
-        if self.t1.is_alive():
-            print("work")
+
+        if self.applyflag==0:
+            
+            
+            self.indexNumberofCombobox=self.timeComboBox.currentIndex()
+            t=self.timelist[self.indexNumberofCombobox]*60
+            self.p = mp.Process(target=DesktopWallpaper.changeDeskWall, args=(self.path,t,self.suffilecheckBox.isChecked(),))
+            self.p.daemon=True
+            self.applyflag +=1
+            self.p.start()
+
+
+            # t1=mp.Process(target=self.ApplyButtonFunctionCall,args=())
+            # self.t1.daemon=True
+            # self.t1=threading.Thread(target=self.ApplyButtonFunctionCall) #creat thread and call function
+            #t1.start()
+
         else:
-            print("else")
-            self.threadActive=True
-            self.applyClickCount +=1
-            self.t1.start()
+            self.p.kill()
+            self.indexNumberofCombobox=self.timeComboBox.currentIndex()
+            t=self.timelist[self.indexNumberofCombobox]*60
+            print(self.indexNumberofCombobox)
+            print(t)
+            self.p = mp.Process(target=DesktopWallpaper.changeDeskWall, args=(self.path,5,self.suffilecheckBox.isChecked(),))
+            self.p.daemon=True
+            self.p.start()
+            
+            # self.t1.kill()
+            # self.t1=threading.Thread(target=self.ApplyButtonFunctionCall) #creat thread and call function
+            # self.t1.daemon=True
+            # self.t1.start()
+        DesktopWallpaper.Write_last_location(self.folderpath.text())
 
-        # if t1.is_alive():
-        #     print("work")
-
-    def ApplyButtonFunctionCall(self):
-        t=int(self.timelist[self.indexNumberofCombobox]*60) #set time for sleep
-        #DesktopWallpaper.changeDeskWall(self.path,t,self.suffilecheckBox.isChecked()) #call function to change wallpaper
-        pathString=self.path
-        checked=self.suffilecheckBox.isChecked()
-        imgaeindex=int(Userinformetion.textInFile("lastImgIndex","GET"))
-        i=imgaeindex
-        count=self.applyClickCount
-        try:
-            images=os.listdir(pathString)
-        except Exception as e:
-                pass
-        while self.t1.is_alive():
-            if self.applyClickCount&1==0:
-                break
-            print(self.t1.is_alive())
-            try:
-                
-                name,extesion=os.path.splitext(images[i])
-                if extesion in [".JPEG",".jpeg",".PNG",".png",".jpg",".JPG"]:
-                    path = pathString+ "\\" + images[i]
-                    # t2=threading.Thread(target=DesktopWallpaper.setWallpaper,args=(path,))
-                    DesktopWallpaper.setWallpaper(path)
-                    # if setWallpaper(path):
-                    t4=threading.Thread(target=Userinformetion.textInFile,args=("lastImgIndex","SET",str(i),))
-                    # Userinformetion.textInFile("lastImgIndex","SET",str(i))
-                    time.sleep(t)
-                    
-            except Exception as e:
-                pass
-            if checked:
-                i=random.randint(0,len(images)-1)
-            else:
-                i +=1
-                if i==len(images):
-                    i=0        
 
         #--------display current desktop wallpaper--------
     def deskImg(self):
         t3=threading.Thread(target=self.displaywall)
         t3.daemon=True
         t3.start()
+
     def displaywall(self):
         while True:
             try:

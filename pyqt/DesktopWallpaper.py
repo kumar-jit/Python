@@ -1,5 +1,4 @@
 import os
-import ctypes
 import time
 import win32api, win32con, win32gui
 from PIL import Image  
@@ -8,11 +7,12 @@ import Userinformetion
 import random
 import threading
 
-
-imgaeindex=int(Userinformetion.textInFile("lastImgIndex","GET"))
+try:
+    imgaeindex=int(Userinformetion.textInFile("lastImgIndex","GET"))
+except:
+    imgaeindex=0
 i=imgaeindex
-
-def setWallpaper(path):
+def SetWallpaper(path):
     print("setwallpaper call")
     try:
         key = win32api.RegOpenKeyEx(win32con.HKEY_CURRENT_USER,"Control Panel\\Desktop",0,win32con.KEY_SET_VALUE)
@@ -38,10 +38,13 @@ def changeDeskWall(pathString,t,checked):
             name,extesion=os.path.splitext(images[i])
             if extesion in [".JPEG",".jpeg",".PNG",".png",".jpg",".JPG"]:
                 path = pathString+ "\\" + images[i]
-                t2=threading.Thread(target=setWallpaper,args=(path,))
-                #setWallpaper(path)
+                t2=threading.Thread(target=SetWallpaper,args=(path,))
+                t2.daemon=True
+                t2.start()
+                # SetWallpaper(path)
                 # if setWallpaper(path):
                 t1=threading.Thread(target=Userinformetion.textInFile,args=("lastImgIndex","SET",str(i),))
+                t1.start()
                 # Userinformetion.textInFile("lastImgIndex","SET",str(i))
                 time.sleep(t)
                 
@@ -55,15 +58,15 @@ def changeDeskWall(pathString,t,checked):
                 i=0
 
     
-def setWallpaper(path):
-    print("setwallpaper call")
-    try:
-        key = win32api.RegOpenKeyEx(win32con.HKEY_CURRENT_USER,"Control Panel\\Desktop",0,win32con.KEY_SET_VALUE)
-        win32api.RegSetValueEx(key, "WallpaperStyle", 0, win32con.REG_SZ, "0")
-        win32api.RegSetValueEx(key, "TileWallpaper", 0, win32con.REG_SZ, "0")
-        win32gui.SystemParametersInfo(win32con.SPI_SETDESKWALLPAPER, path, 1+2)
-    except Exception as e:
-        pass
+# def setWallpaper(path):
+#     print("setwallpaper call")
+#     try:
+#         key = win32api.RegOpenKeyEx(win32con.HKEY_CURRENT_USER,"Control Panel\\Desktop",0,win32con.KEY_SET_VALUE)
+#         win32api.RegSetValueEx(key, "WallpaperStyle", 0, win32con.REG_SZ, "0")
+#         win32api.RegSetValueEx(key, "TileWallpaper", 0, win32con.REG_SZ, "0")
+#         win32gui.SystemParametersInfo(win32con.SPI_SETDESKWALLPAPER, path, 1+2)
+#     except Exception as e:
+#         pass
 
 def Read_last_location():
     # if Userinformetion.New_user():

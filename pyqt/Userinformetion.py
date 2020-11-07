@@ -51,14 +51,25 @@ def exists_user_path():
     path=UserInformetionFolder()
     return(path+"\\info.txt")
 
-
-
+def damage():
+    path=UserInformetionFolder()
+    path=os.path.join(path,"info.txt")
+    with open(path,'r') as rf:
+        text=rf.read()
+    if text.find("lastUsePathathlastUsePathath,\"") and text.find("lastImgIndex,\""):
+        return False
+    else:
+        True
 
 def textInFile(Type,status,newtext=""):
     if New_user():
         path=New_user_creat()
     else:
         path=exists_user_path()
+    if damage():
+        os.remove(path)
+        path=New_user_creat()
+
     oldtext=""
     text=""
     with open(path,"r") as rf:
