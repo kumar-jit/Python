@@ -17,7 +17,8 @@ import Userinformetion
 class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
-        self.timelist=[1,2,5,10,30,60,1440] #time list
+        Userinformetion.setpath()  #set the path
+        self.timelist=[0.15,0.5,1,2,5,10,30,60,1440] #time list
 
         self.indexNumberofCombobox=2 #combobox index number store
 
@@ -25,15 +26,18 @@ class Ui_MainWindow(object):
         
         
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(700, 600)
+        MainWindow.setFixedHeight(600)
+        MainWindow.setFixedWidth(670)
+        MainWindow.setWindowIcon(QtGui.QIcon(r'img\thms.png'))
 
         #lebel for display image
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.currentimageLable = QtWidgets.QLabel(self.centralwidget)
-        self.currentimageLable.setGeometry(QtCore.QRect(70, 40, 551, 311))
+        self.currentimageLable.setGeometry(QtCore.QRect(60, 40, 551, 311))
         self.currentimageLable.setObjectName("currentimageLable")
         t=threading.Thread(target=self.deskImg)
+        t.daemon=True
         t.start()
         
         
@@ -70,6 +74,8 @@ class Ui_MainWindow(object):
         self.timeComboBox = QtWidgets.QComboBox(self.centralwidget)
         self.timeComboBox.setGeometry(QtCore.QRect(450, 430, 131, 22))
         self.timeComboBox.setObjectName("timeComboBox")
+        self.timeComboBox.addItem("")
+        self.timeComboBox.addItem("")
         self.timeComboBox.addItem("")
         self.timeComboBox.addItem("")
         self.timeComboBox.addItem("")
@@ -114,14 +120,15 @@ class Ui_MainWindow(object):
         
         self.browseButton.setText(_translate("MainWindow", "Browse"))
         self.Timelable.setText(_translate("Mainwindow", "Time"))
-
-        self.timeComboBox.setItemText(0, _translate("Mainwindow", "1 Minute"))
-        self.timeComboBox.setItemText(1, _translate("Mainwindow", "2 Minute"))
-        self.timeComboBox.setItemText(2, _translate("Mainwindow", "5 Minute"))
-        self.timeComboBox.setItemText(3, _translate("Mainwindow", "10 Minute"))
-        self.timeComboBox.setItemText(4, _translate("Mainwindow", "30 Minute"))
-        self.timeComboBox.setItemText(5, _translate("Mainwindow", "1 Hour"))
-        self.timeComboBox.setItemText(6, _translate("Mainwindow", "24 Hour"))
+        self.timeComboBox.setItemText(0, _translate("Mainwindow", "10 Secoend"))
+        self.timeComboBox.setItemText(1, _translate("Mainwindow", "30 Secoend"))
+        self.timeComboBox.setItemText(2, _translate("Mainwindow", "1 Minute"))
+        self.timeComboBox.setItemText(3, _translate("Mainwindow", "2 Minute"))
+        self.timeComboBox.setItemText(4, _translate("Mainwindow", "5 Minute"))
+        self.timeComboBox.setItemText(5, _translate("Mainwindow", "10 Minute"))
+        self.timeComboBox.setItemText(6, _translate("Mainwindow", "30 Minute"))
+        self.timeComboBox.setItemText(7, _translate("Mainwindow", "1 Hour"))
+        self.timeComboBox.setItemText(8, _translate("Mainwindow", "24 Hour"))
 
         self.suffilecheckBox.setText(_translate("Mainwindow", "Suffile"))
 
@@ -131,9 +138,9 @@ class Ui_MainWindow(object):
 
     # ------- Browes button function  for get file path from user------
     def BrowsePath(self):
-        lastpath=self.path
-        self.folderpath.setText(QFileDialog.getExistingDirectory(None,"Select a Folder",lastpath))
+        self.folderpath.setText(QFileDialog.getExistingDirectory(None,"Select a Folder",self.folderpath.text()))
         self.path=self.folderpath.text()
+        
         DesktopWallpaper.Write_last_location(self.path)
         # QtWidgets.QFileDialog.getExistingDirectoryUrl(self,"open file",r"C:\Users\kumar\OneDrive\Pictures\Saved Pictures")
     
@@ -141,20 +148,62 @@ class Ui_MainWindow(object):
     
     #----------Apply Push Button function--------
     def ApplyButton(self):
+        self.applyClickCount=0
+        stop_threads = False
         self.indexNumberofCombobox=self.timeComboBox.currentIndex()
-        t1=threading.Thread(target=self.ApplyButtonFunctionCall)
-        t1.daemon=True
-        t1.start()
+        self.t1=threading.Thread(target=self.ApplyButtonFunctionCall) #creat thread and call function
+        self.t1.daemon=True
+       
+        if self.t1.is_alive():
+            print("work")
+        else:
+            print("else")
+            self.threadActive=True
+            self.applyClickCount +=1
+            self.t1.start()
+
+        # if t1.is_alive():
+        #     print("work")
 
     def ApplyButtonFunctionCall(self):
-        t=self.timelist[self.indexNumberofCombobox]*60
-        print(t)
-        DesktopWallpaper.changeDeskWall(self.path,t)
-        
+        t=int(self.timelist[self.indexNumberofCombobox]*60) #set time for sleep
+        #DesktopWallpaper.changeDeskWall(self.path,t,self.suffilecheckBox.isChecked()) #call function to change wallpaper
+        pathString=self.path
+        checked=self.suffilecheckBox.isChecked()
+        imgaeindex=int(Userinformetion.textInFile("lastImgIndex","GET"))
+        i=imgaeindex
+        count=self.applyClickCount
+        try:
+            images=os.listdir(pathString)
+        except Exception as e:
+                pass
+        while self.t1.is_alive():
+            if self.applyClickCount&1==0:
+                break
+            print(self.t1.is_alive())
+            try:
+                
+                name,extesion=os.path.splitext(images[i])
+                if extesion in [".JPEG",".jpeg",".PNG",".png",".jpg",".JPG"]:
+                    path = pathString+ "\\" + images[i]
+                    # t2=threading.Thread(target=DesktopWallpaper.setWallpaper,args=(path,))
+                    DesktopWallpaper.setWallpaper(path)
+                    # if setWallpaper(path):
+                    t4=threading.Thread(target=Userinformetion.textInFile,args=("lastImgIndex","SET",str(i),))
+                    # Userinformetion.textInFile("lastImgIndex","SET",str(i))
+                    time.sleep(t)
+                    
+            except Exception as e:
+                pass
+            if checked:
+                i=random.randint(0,len(images)-1)
+            else:
+                i +=1
+                if i==len(images):
+                    i=0        
 
-#--------display current desktop wallpaper--------
+        #--------display current desktop wallpaper--------
     def deskImg(self):
-        
         t3=threading.Thread(target=self.displaywall)
         t3.daemon=True
         t3.start()
@@ -167,7 +216,6 @@ class Ui_MainWindow(object):
                 self.pixmap=self.DesktopImage.scaled(551, 311)
                 self.currentimageLable.setPixmap(self.pixmap)
             except:
-                print("getting error")
                 time.sleep(1)
             
             

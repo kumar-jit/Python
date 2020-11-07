@@ -1,1 +1,2 @@
-C:/Users/kumar/OneDrive/Pictures/Saved Pictures
+lastUsePathath,"C:/Users/kumar/OneDrive/Pictures/Camera Roll"
+lastImgIndex,"0"
