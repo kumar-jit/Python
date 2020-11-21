@@ -4,6 +4,8 @@ import time
 import win32api, win32con, win32gui
 from PIL import Image  
 import PIL
+import multiprocessing as mp
+
 
 current_path=""
 def setpath():
@@ -40,7 +42,7 @@ def New_user_creat():
     path=UserInformetionFolder()
     path=path+"\info.txt"
     with open(path,'w') as f:
-        string=os.path.expandvars("%AppData%\\Microsoft\Windows\\Libraries\\Pictures\\")
+        string=os.path.expandvars("%AppData%\\Microsoft\Windows\\Libraries\\Pictures")
         text="lastUsePathath,\""+string+"\"\nlastImgIndex,\"0\""
         f.write(text)
         return path
@@ -56,10 +58,10 @@ def damage():
     path=os.path.join(path,"info.txt")
     with open(path,'r') as rf:
         text=rf.read()
-    if text.find("lastUsePathathlastUsePathath,\"") and text.find("lastImgIndex,\""):
-        return False
+    if text.find("lastUsePathath,\"")==-1 or text.find("lastImgIndex,\"")==-1:
+        return True
     else:
-        True
+        return False
 
 def textInFile(Type,status,newtext=""):
     if New_user():
@@ -67,6 +69,7 @@ def textInFile(Type,status,newtext=""):
     else:
         path=exists_user_path()
     if damage():
+        print("delete damage path")
         os.remove(path)
         path=New_user_creat()
 

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My first page</title>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+        
+        <style>
+            div,body,html{
+                padding: 0;
+                margin: 0;
+            }
+            .main{
+                background-image: url('img1.jpg');
+                background-position: center;
+                background-size: cover;
+                height: 120vh;
+            }
+            .socialmedia{
+                position: fixed;
+                z-index: 1;
+                top: 70vh;
+                right: 0;
+                padding: 0;
+                margin: 0;
+                width: auto;
+                height: auto;
+            }
+            .social-icon{
+            
+            }
+            .socialbutton{
+                border: none;
+                color: white;
+                background-image: linear-gradient(-45deg, rgb(255, 230, 0),rgb(255, 4, 242));
+                height: 40px;
+                width: 40px;
+                cursor: pointer;
+                transition:.8s;
+            }
+            .socialbutton:hover{
+                width: 60px;
+                padding-right: 30px;
+                font-size: 25px;
+                transition:.5s;
+            }
+            a{
+                text-decoration: none;
+            }
+            a:hover{
+                text-decoration: none;
+            }
+            .navbutton{
+                border: none;
+                background-color: rgba(255, 255, 255, 0);
+            }
+            .navbar{
+                display: flex;
+            }
+            .navbar .catagory{
+                float:right;
+            }
+            .catagory ul{
+                display: flex;
+                
+            }
+            .catagory ul li{
+                list-style: none;
+                padding-left:20px;
+                
+            }
+            .catagory ul li button a {
+                color: white;
+                transition: .5s;
+            }
+            .catagory ul li button a:hover{
+                
+                color: rgba(255, 255, 255, 0.527);
+                transition: .5s;
+            }
+            .headtext{
+                margin: 35px 0;
+                text-align: center;
+                color: white;
+                font-family: 'Pacifico', cursive;
+                font-size: 100px;
+
+            }
+            .para{
+                font-family: 'Montserrat', sans-serif;
+                color: white;
+                font-size: 7;
+                font-weight: lighter;
+            }
+            .ic{
+                font-size: 80px;
+                background: -webkit-linear-gradient(-45deg,rgb(255, 2, 255), rgb(251, 255, 1));
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+            }
+            .icon a{
+                color: white;
+                font-size: 20px;
+                font-weight: bold;
+            }
+        </style>
+
+    </head>
+
+    <body style="padding: 0;margin: 0;">
+        <div class="socialmedia">
+            <div>
+                <div class="so  cial-icon">
+                    <a href="#"><button class="socialbutton"><i class="fab fa-instagram"></i></button></a>
+                </div>
+                <div class="social-icon">
+                    <a><button class="socialbutton"><i class="fab fa-facebook-f"></i></button></a>
+                </div>
+                <div class="social-icon">
+                    <a><button class="socialbutton"><i class="fab fa-twitter"></i></button></a>
+                </div>
+            </div>
+
+        </div>
+        <div class="main" >
+            <nav class="navbar">
+                <div class="icon">
+                    <a href="">My Page</a>
+                </div>
+                <div class="catagory">
+                    <ul>
+                        <li><button class="navbutton"><a href="#">Home</a></button></li>
+                        <li><button class="navbutton"><a href="#"> About</a></button></li>
+                        <li><button class="navbutton"><a href="#">Galery</a></button></li>
+                        <li><button class="navbutton"><a href="#">Contact</a></button></li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="row justify-content-md-center">
+                <div class="col col-mg-8 col-sm-8">
+                    <div class="row justify-content-md-center">
+                        <div class="col col-sm-12">
+                            <div class="headtext">
+                                <p class="headerText">Graphic Designer</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-md-center">
+                        <div class="col-sm-8">
+                            <div class="para">
+                            <p>I am a graphic designer currently working as a lead graphic/packaging 
+                                designer for one of the best soap & toiletries. Her extensive portfolio in packing 
+                                design along with her other works is showcased beautifully in her graphic design 
+                                portfolio website which features a horizontal scrolling gallery on the home page.</p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row justify-content-md-center">
+            <div class="col-md-2">
+                <div style="border-right: 1px solid rgba(0, 0, 0, 0.253);text-align: center;">
+                    <p class="ic"><i class="fas fa-graduation-cap"></i></p>
+                    <p style="text-align: center;"><h4>HETC</h4></p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div style="border-right: 1px solid rgba(0, 0, 0, 0.253);text-align: center;">
+                    <p class="ic"><i class="fas fa-building"></i></p>
+                    <p style="text-align: center;"><h3>Own Business</h3></p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div style="text-align: center;">
+                    <p class="ic"><i class="fas fa-address-card"></i></p>
+                    <p style="text-align: center;"><h3>PhotoShop</h3></p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

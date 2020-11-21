@@ -6,31 +6,39 @@ import PIL
 import Userinformetion
 import random
 import threading
+import multiprocessing as mp
+import ctypes
+import win32con
+
 
 try:
     imgaeindex=int(Userinformetion.textInFile("lastImgIndex","GET"))
 except:
     imgaeindex=0
 i=imgaeindex
+
+
 def SetWallpaper(path):
     print("setwallpaper call")
     try:
         key = win32api.RegOpenKeyEx(win32con.HKEY_CURRENT_USER,"Control Panel\\Desktop",0,win32con.KEY_SET_VALUE)
-        win32api.RegSetValueEx(key, "WallpaperStyle", 0, win32con.REG_SZ, "0")
+        win32api.RegSetValueEx(key, "WallpaperStyle", 0, win32con.REG_SZ, "10")
         win32api.RegSetValueEx(key, "TileWallpaper", 0, win32con.REG_SZ, "0")
-        win32gui.SystemParametersInfo(win32con.SPI_SETDESKWALLPAPER, path, 1+2)
+        win32gui.SystemParametersInfo(win32con.SPI_SETDESKWALLPAPER, path, 100)
     except Exception as e:
-        pass
+        print(e)
+SetWallpaper(r"C:\Users\kumar\OneDrive\Pictures\Camera Roll\pexels-roman-pohorecki-15382.jpg")
 
-# def UpdateimageIndex():
-#     Userinformetion.textInFile("lastImgIndex","SET",str(i))
+def UpdateimageIndex():
+    Userinformetion.textInFile("lastImgIndex","SET",str(i))
 
 def changeDeskWall(pathString,t,checked):
+    print("change desk wall call calling")
     i=imgaeindex
     try:
         images=os.listdir(pathString)
     except Exception as e:
-        pass
+        print("gettibg image listt error")
     while True: 
         
         try:
@@ -49,7 +57,7 @@ def changeDeskWall(pathString,t,checked):
                 time.sleep(t)
                 
         except Exception as e:
-            pass
+            i=0
         if checked:
             i=random.randint(0,len(images)-1)
         else:
@@ -90,7 +98,6 @@ def Write_last_location(last_path):
     # with open(path,'w') as wf:
     #     wf.write(last_path)
     Userinformetion.textInFile("lastUsePathath","SET",last_path)
-
 def GetCurrentDesktopImage():
     gopath=os.path.expandvars(r"%AppData%\Microsoft\Windows\Themes\TranscodedWallpaper")
     #geting the current path

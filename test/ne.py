@@ -1,28 +1,3 @@
-# import os
-
-# def textInFile(string,r,newtext=""):
-#     oldtext=""
-#     text=""
-#     with open(r"C:\Users\kumar\OneDrive\Documents\python\test\text.txt","r") as rf:
-#         text=rf.read()
-#         post=text.find(string)
-#         fist_index=text.find("\"",post)
-#         last_index=text.find("\"",fist_index+1)
-#         oldtext=text[fist_index+1:last_index]
-#     if r!="read":
-#         text=text.replace(oldtext,newtext)
-#         with open(r"C:\Users\kumar\OneDrive\Documents\python\test\text.txt","w") as rf:
-#             rf.write(text)
-#             return True
-#     else:
-#         return oldtext
-
-import multiprocessing as mp
-
-def foo():
-    print('hello')
-
-if __name__ == '__main__':
-    # mp.set_start_method('spawn')
-    p = mp.Process(target=foo, args=())
-    p.start()
+import gconf
+conf = gconf.client_get_default()
+conf.set_string(r'/desktop/gnome/background/picture_filename',r'/path/to/C:\Users\kumar\OneDrive\Pictures\Camera Roll\pexels-tirachard-kumtanom-347145.jpg')

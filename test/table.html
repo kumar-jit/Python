@@ -1,65 +1,91 @@
 <html>
 <title> Table in HTML</title>
+<style>
+    table,td,th{
+        border: 1px solid rgba(153, 153, 153, 0.315);
+        
+    }
+    table{
+        border-collapse: collapse;
+
+    }
+    td,th{
+        padding-top:15px ;
+        padding-bottom: 15px;
+    }
+    .even{
+        color: rgb(85, 85, 85);
+        background-color: rgba(131, 130, 130, 0.411);
+    }
+    .odd{
+        color: rgb(85, 85, 85);
+        background-color: rgb(218, 218, 218);
+    }
+
+    table.center {
+        width: 75%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    th{
+        background-color: rgba(255, 99, 71, 0.952);
+        color: rgba(255, 255, 255, 0.884);
+    }
+    
+</style>
 <body>
-    <table border="2">  
-        <tr>
-            <th> Tean Name</th>
-            <th> Total Match</th>
-            <th> Win</th>
-            <th>Loss</th>
-            <th>Totla Points</th>
-        </tr>
-        <tr>
-            <td>MI</td> <td>14</td> <td>9</td> <td>5</td> <td>18</td>
-        </tr>
+    <div  >
+        <div style="display:block;">
+            <table style=" text-align: center;align-items: center;" class="center">
+                <tr>
+                    <th> Tean Name</th>
+                    <th> Total Match</th>
+                    <th> Win</th>
+                    <th>Loss</th>
+                    <th>Totla Points</th>
+                </tr>
+                <tr class="even">
+                    <td>MI</td> <td>14</td> <td>9</td> <td>5</td> <td>18</td>
+                </tr>
+        
+                <tr class="odd">
+                    <td>DC</td> <td>14</td> <td>8</td> <td>6</td> <td>16</td>
+                </tr>
+        
+                <tr class="even">
+                    <td>SRH</td> <td>14</td> <td>7</td> <td>7</td> <td>14</td>
+                </tr>
+        
+                <tr class="odd">
+                    <td>RCB</td> <td>14</td> <td>7</td> <td>7</td> <td>14</td>
+                </tr>
+        
+                <tr class="even">
+                    <td>KKR</td> <td>14</td> <td>7</td> <td>7</td> <td>14</td>
+                </tr>
+        
+                <tr class="odd">
+                    <td>KXIP</td> <td>14</td> <td>6</td> <td>8</td> <td>12</td>
+                </tr>
+        
+                <tr class="even">
+                    <td>CSK</td> <td>14</td> <td>6</td> <td>8</td> <td>12</td>
+                </tr>
+        
+                <tr class="odd">
+                    <td>RR</td> <td>14</td> <td>6</td> <td>8</td> <td>12</td>
+                </tr>
+        </div>
+        
+        
+        
+    </div>
+    <div style="position: relative; top: 85vh;margin-left: 45%;">
 
-        <tr>
-            <td>DC</td> <td>14</td> <td>8</td> <td>6</td> <td>16</td>
-        </tr>
-
-        <tr>
-            <td>SRH</td> <td>14</td> <td>7</td> <td>7</td> <td>14</td>
-        </tr>
-
-        <tr>
-            <td>RCB</td> <td>14</td> <td>7</td> <td>7</td> <td>14</td>
-        </tr>
-
-        <tr>
-            <td>KKR</td> <td>14</td> <td>7</td> <td>7</td> <td>14</td>
-        </tr>
-
-        <tr>
-            <td>KXIP</td> <td>14</td> <td>6</td> <td>8</td> <td>12</td>
-        </tr>
-
-        <tr>
-            <td>CSK</td> <td>14</td> <td>6</td> <td>8</td> <td>12</td>
-        </tr>
-
-        <tr>
-            <td>RR</td> <td>14</td> <td>6</td> <td>8</td> <td>12</td>
-        </tr>
-
-        <br>
-        <br>
-
-        <ul type="circle">
-            <li>Semi Final Team</li>
-                <ol>
-                    <li>MI</li>
-                    <li>DC</li>
-                    <li>SRH</li>
-                    <li>RCB</li>
-                </ol>
-            <li>Other Team</li>
-                <ol>
-                    <li>KKR</li>
-                    <li>KXIP</li>
-                    <li>CSK</li>
-                    <li>RR</li>
-                </ol>
-        </ul>
+        <a href="list.html"><button style="padding: 15 30;background-color:rgba(255, 99, 71, 0.952) ;color: white;border: none;cursor:pointer;font-size: 16px;">List View</button></a>
+    </div>
+    
+    
  
 </body>
  

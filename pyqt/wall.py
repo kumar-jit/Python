@@ -1,5 +1,7 @@
-#http://www.brunningonline.net/simon/blog/archives/winDesktop.py.html
-
+# http://www.brunningonline.net/simon/blog/archives/winDesktop.py.html
+# https://www.blog.pythonlibrary.org/2014/10/22/pywin32-how-to-set-desktop-background/
+# http://systemmanager.ru/win2k_regestry.en/93239.htm
+# https://stackoverflow.com/questions/19989906/how-to-set-wallpaper-style-fill-stretch-according-to-windows-version
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
@@ -10,9 +12,7 @@ import DesktopWallpaper
 import win32api, win32con, win32gui
 import Userinformetion
 import multiprocessing as mp
-
-def foo():
-    print("work")
+import sys 
 
 
 class Ui_MainWindow(object):
@@ -141,7 +141,8 @@ class Ui_MainWindow(object):
     # ------- Browes button function  for get file path from user------
     def BrowsePath(self):
         getpath=self.folderpath.text()
-        self.folderpath.setText(QFileDialog.getExistingDirectory(None,"Select a Folder",getpath))
+        print(getpath)
+        self.folderpath.setText(QFileDialog.getExistingDirectory(None,"Select a Folder",getpath ))
         self.path=self.folderpath.text()
         
         #DesktopWallpaper.Write_last_location(self.path)
@@ -151,35 +152,35 @@ class Ui_MainWindow(object):
     
     #----------Apply Push Button function--------
     def ApplyButton(self):
+        print("apply button calling")
 
         if self.applyflag==0:
             
-            
             self.indexNumberofCombobox=self.timeComboBox.currentIndex()
             t=self.timelist[self.indexNumberofCombobox]*60
+
             self.p = mp.Process(target=DesktopWallpaper.changeDeskWall, args=(self.path,t,self.suffilecheckBox.isChecked(),))
             self.p.daemon=True
             self.applyflag +=1
             self.p.start()
-
-
-            # t1=mp.Process(target=self.ApplyButtonFunctionCall,args=())
+            # self.t1=threading.Thread(target=DesktopWallpaper.changeDeskWall, args=(self.path,t,self.suffilecheckBox.isChecked(),)) #creat thread and call function
             # self.t1.daemon=True
-            # self.t1=threading.Thread(target=self.ApplyButtonFunctionCall) #creat thread and call function
-            #t1.start()
+            # self.t1.start()
 
         else:
             self.p.kill()
-            self.indexNumberofCombobox=self.timeComboBox.currentIndex()
-            t=self.timelist[self.indexNumberofCombobox]*60
-            print(self.indexNumberofCombobox)
+            indexNumberofCombobox=self.timeComboBox.currentIndex()
+            t=self.timelist[indexNumberofCombobox]*60
+            print(indexNumberofCombobox)
             print(t)
-            self.p = mp.Process(target=DesktopWallpaper.changeDeskWall, args=(self.path,5,self.suffilecheckBox.isChecked(),))
+            # mp.set_start_method('spawn')
+            self.p = mp.Process(target=DesktopWallpaper.changeDeskWall, args=(self.path,t,self.suffilecheckBox.isChecked(),))
             self.p.daemon=True
             self.p.start()
-            
-            # self.t1.kill()
-            # self.t1=threading.Thread(target=self.ApplyButtonFunctionCall) #creat thread and call function
+
+
+
+            # self.t1=threading.Thread(target=DesktopWallpaper.changeDeskWall, args=(self.path,t,self.suffilecheckBox.isChecked(),)) #creat thread and call function
             # self.t1.daemon=True
             # self.t1.start()
         DesktopWallpaper.Write_last_location(self.folderpath.text())
@@ -187,6 +188,10 @@ class Ui_MainWindow(object):
 
         #--------display current desktop wallpaper--------
     def deskImg(self):
+        # self.p1 = mp.Process(target=(self.displaywall),args=(self,))
+        # self.p1.daemon=True
+        # self.p1.start()
+
         t3=threading.Thread(target=self.displaywall)
         t3.daemon=True
         t3.start()
@@ -209,5 +214,6 @@ if __name__ == "__main__":
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
+    mp.freeze_support()
     MainWindow.show()
     sys.exit(app.exec_())
